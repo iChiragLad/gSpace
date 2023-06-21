@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package gspace;
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "gSpaceUser.Protos";
+
+message News {
+  google.protobuf.Timestamp news_time = 1;
+  string news_item = 2;
+}
+
+message NewsResponse {
+  bool delivered = 1;
+}
+
+service Gspace {
+    rpc PublishNews(stream News) returns (NewsResponse);
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package gspace;
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "gSpaceUser.Protos";
+
+message RegistrationRequest {
+  string user_name = 1;
+  string space_name = 2;
+}
+
+message RegistrationResponse {
+  string space_id = 1;
+}
+
+service Gspace {
+    rpc RegisterToSpace(RegistrationRequest) returns (RegistrationResponse);
+}
