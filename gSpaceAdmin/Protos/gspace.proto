@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package gspace;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "gSpaceAdmin.Protos";
+
+message LineMessage {
+  google.protobuf.Timestamp linemessage_time = 1;
+  string linemessage_item = 2;
+}
+
+service Gspace {
+    rpc MonitorSpace(google.protobuf.Empty) returns (stream LineMessage);
+}

@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 package gspace;
-import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "gSpaceUser.Protos";
 

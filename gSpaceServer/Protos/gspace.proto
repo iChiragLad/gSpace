@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package gspace;
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 option csharp_namespace = "gSpaceServer.Protos";
 
@@ -23,7 +24,13 @@ message NewsResponse {
   bool delivered = 1;
 }
 
+message LineMessage {
+  google.protobuf.Timestamp linemessage_time = 1;
+  string linemessage_item = 2;
+}
+
 service Gspace {
     rpc RegisterToSpace(RegistrationRequest) returns (RegistrationResponse);
     rpc PublishNews(stream News) returns (NewsResponse);
+    rpc MonitorSpace(google.protobuf.Empty) returns (stream LineMessage);
 }
