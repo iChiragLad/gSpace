@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gSpaceServer", "gSpaceServer\gSpaceServer.csproj", "{159A85CB-B9A2-419C-8215-D44C67299408}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gSpaceUser", "gSpaceUser\gSpaceUser.csproj", "{3444FFA0-F079-4FE1-AF76-26EEE26BEC54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{159A85CB-B9A2-419C-8215-D44C67299408}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{159A85CB-B9A2-419C-8215-D44C67299408}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{159A85CB-B9A2-419C-8215-D44C67299408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3444FFA0-F079-4FE1-AF76-26EEE26BEC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3444FFA0-F079-4FE1-AF76-26EEE26BEC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3444FFA0-F079-4FE1-AF76-26EEE26BEC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3444FFA0-F079-4FE1-AF76-26EEE26BEC54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
