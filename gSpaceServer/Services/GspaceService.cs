@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using gSpaceServer.Protos;
+using gSpaceServer.Utils;
 using System.Collections.ObjectModel;
 using static gSpaceServer.Protos.Gspace;
 
@@ -26,6 +27,7 @@ namespace gSpaceServer.Services
       await foreach (var message in requestStream.ReadAllAsync())
       {
         _logger.LogInformation($"At : {message.NewsTime}, received : {message.NewsItem}");
+        MessageQueue.AddMessageToQueue(new LineMessage { LinemessageTime = message.NewsTime, LinemessageItem = message.NewsItem, UserName = "Bot" });
       }
 
       return new NewsResponse { Delivered = true };
@@ -33,17 +35,13 @@ namespace gSpaceServer.Services
 
     public override async Task MonitorSpace(Empty request, IServerStreamWriter<LineMessage> responseStream, ServerCallContext context)
     {
-      var NewsList = new ReadOnlyCollection<string>(
-        new[]
-        {
-          "Yo Yo Yo - A state visit with high expectations",
-          "Yo Yo Yo - Election not a licence for violence",
-        });
-      
-      foreach(var news in NewsList)
+      while(true)
       {
-        await responseStream.WriteAsync(new LineMessage() { LinemessageItem = news, LinemessageTime = Timestamp.FromDateTime(DateTime.Now.ToUniversalTime())});
-        await Task.Delay(TimeSpan.FromSeconds(2));
+        if(MessageQueue.GetNewMessageCount() > 0)
+        {
+          await responseStream.WriteAsync(MessageQueue.GetNextMessage());
+        }
+        await Task.Delay(TimeSpan.FromMilliseconds(500));
       }
     }
   }

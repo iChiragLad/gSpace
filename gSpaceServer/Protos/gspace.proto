@@ -27,6 +27,7 @@ message NewsResponse {
 message LineMessage {
   google.protobuf.Timestamp linemessage_time = 1;
   string linemessage_item = 2;
+  string user_name = 3;
 }
 
 service Gspace {
