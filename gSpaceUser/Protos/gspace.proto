@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package gspace;
+import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "gSpaceUser.Protos";
 
@@ -10,9 +11,17 @@ message RegistrationRequest {
 }
 
 message RegistrationResponse {
-  string space_id = 1;
+  bool success = 1;
+}
+
+message ChatMessage {
+  google.protobuf.Timestamp chat_time = 1;
+  string chat_item = 2;
+  string user_name = 3;
+  string space_name = 4;
 }
 
 service Gspace {
     rpc RegisterToSpace(RegistrationRequest) returns (RegistrationResponse);
+    rpc StartChat(stream ChatMessage) returns (stream ChatMessage);
 }

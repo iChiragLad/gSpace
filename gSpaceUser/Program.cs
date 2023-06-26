@@ -1,4 +1,6 @@
-﻿using Grpc.Net.Client;
+﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using Grpc.Net.Client;
 using gSpaceUser.Protos;
 
 namespace gSpaceUser;
@@ -9,18 +11,19 @@ class Program
     var channel = GrpcChannel.ForAddress("http://localhost:5078", new GrpcChannelOptions { UnsafeUseInsecureChannelCallCredentials = true });
     var client = new Gspace.GspaceClient(channel);
 
-    Console.WriteLine("Weclome to gSpace app!!!\n");
+    Console.WriteLine("Weclome to the gSpace app!!!\n");
     Console.Write("Enter your Username: ");
     var username = Console.ReadLine();
     Console.Write("Enter the Space you want to join: ");
     var spaceName = Console.ReadLine();
 
+    Console.WriteLine($"Connecting you to the {spaceName} space...");
 
     try
     {
-      Console.WriteLine($"Connecting you to the chat room ({spaceName})...");
       var reply = client.RegisterToSpace(new RegistrationRequest { UserName = username, SpaceName = spaceName });
-      Console.WriteLine(reply.SpaceId);
+      Console.ForegroundColor = ConsoleColor.Green;
+      Console.WriteLine($"Successfuly connected to {spaceName}!!!");
     }
     catch (Exception ex)
     {
@@ -30,39 +33,52 @@ class Program
       return;
     }
 
-    Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine($"Successfuly connected to {spaceName}!!!");
     Console.ForegroundColor = ConsoleColor.White;
-    Console.Write("Press ENTER to start");
+    Console.Write("Press ENTER to start.");
     Console.ReadKey();
-
-    var inputText = "Type your message: ";
-
     Console.Clear();
-    Console.Write(inputText);
-    var message = Console.ReadLine();
 
-    // Send message to Server
+    var promptText = "Type your message: ";
+    string inputMessage = string.Empty;
+    int row = 2;
+    using var call = client.StartChat();
 
     //Receive message from server
-    int row = 2;
-    PrintMessage(message, row);
-    ResetCursor(inputText.Length);
+    var task = Task.Run(async () =>
+    {
+      await foreach (var chat in call.ResponseStream.ReadAllAsync())
+      {
+        PrintMessage(chat, row, promptText.Length);
+        row++;
+      }
+    });
 
+    Console.Write(promptText);
+    // Send message to Server
+    while (true)
+    {
+      inputMessage = Console.ReadLine();
+      ResetCursor(promptText.Length);
+
+      call.RequestStream.WriteAsync(new ChatMessage { ChatTime = Timestamp.FromDateTime(DateTime.Now.ToUniversalTime()), ChatItem = inputMessage, UserName = username, SpaceName = spaceName });
+    }
+
+    call.RequestStream.CompleteAsync();
     Console.ReadKey();
-
   }
 
-  static void ResetCursor(int inputTextLength)
+  static void ResetCursor(int promptTextLength)
   {
-    Console.SetCursorPosition(inputTextLength, 0);
+    Console.SetCursorPosition(promptTextLength, 0);
     Console.Write(new string(' ', Console.BufferWidth));
-    Console.SetCursorPosition(inputTextLength, 0);
+    Console.SetCursorPosition(promptTextLength, 0);
   }
 
-  static void PrintMessage(string message, int row)
+  static void PrintMessage(ChatMessage chat, int row, int promptTextLength)
   {
-    Console.SetCursorPosition(0, row++);
-    Console.Write($"Chirag: {message}");
+    Console.SetCursorPosition(0, row);
+    Console.Write($"{chat.UserName}: {chat.ChatItem}");
+    ResetCursor(promptTextLength);
+
   }
 }

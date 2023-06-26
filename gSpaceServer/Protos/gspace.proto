@@ -12,10 +12,10 @@ message RegistrationRequest {
 }
 
 message RegistrationResponse {
-  string space_id = 1;
+  bool success = 1;
 }
 
-message News {
+message NewsMessage {
   google.protobuf.Timestamp news_time = 1;
   string news_item = 2;
 }
@@ -24,14 +24,16 @@ message NewsResponse {
   bool delivered = 1;
 }
 
-message LineMessage {
-  google.protobuf.Timestamp linemessage_time = 1;
-  string linemessage_item = 2;
+message ChatMessage {
+  google.protobuf.Timestamp chat_time = 1;
+  string chat_item = 2;
   string user_name = 3;
+  string space_name = 4;
 }
 
 service Gspace {
     rpc RegisterToSpace(RegistrationRequest) returns (RegistrationResponse);
-    rpc PublishNews(stream News) returns (NewsResponse);
-    rpc MonitorSpace(google.protobuf.Empty) returns (stream LineMessage);
+    rpc PublishNews(stream NewsMessage) returns (NewsResponse);
+    rpc MonitorSpace(google.protobuf.Empty) returns (stream ChatMessage);
+    rpc StartChat(stream ChatMessage) returns (stream ChatMessage);
 }

@@ -4,18 +4,18 @@ namespace gSpaceServer.Utils
 {
   public class MessageQueue
   {
-    private static Queue<LineMessage> _queue;
+    private static Queue<ChatMessage> _queue;
     static MessageQueue()
     {
-      _queue= new Queue<LineMessage>();
+      _queue= new Queue<ChatMessage>();
     }
 
-    public static void AddMessageToQueue(LineMessage msg)
+    public static void AddMessageToQueue(ChatMessage msg)
     {
       _queue.Enqueue(msg);
     }
 
-    public static LineMessage GetNextMessage() 
+    public static ChatMessage GetNextMessage() 
     { 
       return _queue.Dequeue(); 
     }

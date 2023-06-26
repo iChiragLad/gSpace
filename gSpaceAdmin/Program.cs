@@ -13,9 +13,9 @@ class Program
 
     using var callStream = client.MonitorSpace(new Empty());
 
-    await foreach(var linemessage in callStream.ResponseStream.ReadAllAsync())
+    await foreach(var chatMessage in callStream.ResponseStream.ReadAllAsync())
     {
-      Console.WriteLine($"At : {linemessage.LinemessageTime}, received : {linemessage.LinemessageItem}");
+      Console.WriteLine($"At : {chatMessage.ChatTime}, received : {chatMessage.ChatItem}");
     }
   }
 }

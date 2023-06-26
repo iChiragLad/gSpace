@@ -7,12 +7,13 @@ import "google/protobuf/empty.proto";
 
 option csharp_namespace = "gSpaceAdmin.Protos";
 
-message LineMessage {
-  google.protobuf.Timestamp linemessage_time = 1;
-  string linemessage_item = 2;
+message ChatMessage {
+  google.protobuf.Timestamp chat_time = 1;
+  string chat_item = 2;
   string user_name = 3;
+  string space_name = 4;
 }
 
 service Gspace {
-    rpc MonitorSpace(google.protobuf.Empty) returns (stream LineMessage);
+    rpc MonitorSpace(google.protobuf.Empty) returns (stream ChatMessage);
 }
