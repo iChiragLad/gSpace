@@ -31,7 +31,7 @@ class Program
 
     foreach (var news in NewsList)
     {
-      await callStream.RequestStream.WriteAsync(new NewsMessage { NewsItem = news, NewsTime = Timestamp.FromDateTime(DateTime.Now.ToUniversalTime()), SpaceName = "Admin"});
+      await callStream.RequestStream.WriteAsync(new NewsMessage { NewsItem = news, NewsTime = Timestamp.FromDateTime(DateTime.Now.ToUniversalTime()), SpaceName = "Monitoring" });
       Thread.Sleep(2000);
     }
 

@@ -38,13 +38,16 @@ namespace gSpaceServer.Services
 
     public override async Task MonitorSpace(Empty request, IServerStreamWriter<ChatMessage> responseStream, ServerCallContext context)
     {
+      UserList.AddNewUser(new User("Monitoring", "Bot"));
+      
       while (true)
       {
-        if (MessageQueue.GetNewMessageCount() > 0)
+        var chatMessage = UserList.GetMessageFromUserQueue("Bot");
+        if (chatMessage != null)
         {
-          await responseStream.WriteAsync(MessageQueue.GetNextMessage());
+          await responseStream.WriteAsync(chatMessage);
         }
-        await Task.Delay(TimeSpan.FromMilliseconds(500));
+        await Task.Delay(TimeSpan.FromMilliseconds(200));
       }
     }
 

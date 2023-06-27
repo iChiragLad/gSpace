@@ -15,7 +15,7 @@ class Program
 
     await foreach(var chatMessage in callStream.ResponseStream.ReadAllAsync())
     {
-      Console.WriteLine($"At : {chatMessage.ChatTime}, received : {chatMessage.ChatItem}");
+      Console.WriteLine($"{chatMessage.UserName}: {chatMessage.ChatItem}");
     }
   }
 }

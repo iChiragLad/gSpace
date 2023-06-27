@@ -1,5 +1,6 @@
 ﻿using gSpaceServer.Protos;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 
 namespace gSpaceServer.Utils
 {
@@ -23,12 +24,35 @@ namespace gSpaceServer.Utils
 
     public static void AddMessageToChatQueue(ChatMessage chat) 
     {
-      foreach(var user in _userList)
+      //News Message
+      if (chat.UserName == "Bot")
       {
-        if(user.Space == chat.SpaceName)
+        foreach (var user in _userList)
         {
           user.AddMessageToQueue(chat);
         }
+      }
+      //Chat Message
+      else
+      {
+        foreach (var user in _userList)
+        {
+          if (user.Space == chat.SpaceName)
+          {
+            user.AddMessageToQueue(chat);
+          }
+        }
+        AddMessageToBotQueue(chat);
+      }
+    }
+
+    public static void AddMessageToBotQueue(ChatMessage chat)
+    {
+      var admin = _userList.Where(u => u.Username == "Bot").FirstOrDefault();
+
+      if (admin != null)
+      {
+        admin.AddMessageToQueue(chat);
       }
     }
 
