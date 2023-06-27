@@ -32,9 +32,9 @@ namespace gSpaceServer.Utils
       }
     }
 
-    public static ChatMessage? GetMessageFromUserQueue(User user)
+    public static ChatMessage? GetMessageFromUserQueue(string username)
     {
-      var userFromList = _userList.FirstOrDefault((u) => u.Username == user.Username);
+      var userFromList = _userList.FirstOrDefault((u) => u.Username == username);
       if (userFromList != null)
       {
         if(userFromList.GetNewMessageCount() > 0)

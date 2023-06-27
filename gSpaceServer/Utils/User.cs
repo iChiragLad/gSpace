@@ -5,15 +5,16 @@ namespace gSpaceServer.Utils
   public class User
   {
 
-    private Queue<ChatMessage> _queue;
+    private Queue<ChatMessage> _queue { get; }
+    public string Username { get; }
+    public string Space { get; }
 
-    public User()
+    public User(string space, string username)
     {
-      _queue = new Queue<ChatMessage>();
+      Username = username;
+      Space = space;
+      this._queue = new Queue<ChatMessage>();
     }
-
-    public string Username { get; set; }
-    public string Space { get; set; }
 
     public void AddMessageToQueue(ChatMessage msg)
     {

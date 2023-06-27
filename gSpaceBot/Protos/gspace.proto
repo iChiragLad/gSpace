@@ -8,6 +8,7 @@ option csharp_namespace = "gSpaceUser.Protos";
 message NewsMessage {
   google.protobuf.Timestamp news_time = 1;
   string news_item = 2;
+  string space_name = 3;
 }
 
 message NewsResponse {
